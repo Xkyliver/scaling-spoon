@@ -1,0 +1,15 @@
+name: Debug Keystore
+on: workflow_dispatch
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download BouncyCastle provider
+        run: curl -L -o bcprov.jar https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/1.78/bcprov-jdk18on-1.78.jar
+      - name: Try original default password
+        run: |
+          keytool -list -v -keystore ks.keystore -storepass 123456789 \
+            -storetype BKS \
+            -providerclass org.bouncycastle.jce.provider.BouncyCastleProvider \
+            -providerpath bcprov.jar
